@@ -15,33 +15,38 @@ let score = 0;
 let bestScore = 0;
 let pointScoreFive = 10;
 let PointScoreFruct = 50;
+let gotMove = false;
 
 /**
  * Vérifie la touche pressé du clavier et applique le mouvement.
  * @param {*} e 
  */
 function keyDirection(e) {
-    if (e.keyCode != keycodePress && e.keyCode != reverseDirection(keycodePress)) {
+    if (e.keyCode != keycodePress && e.keyCode != reverseDirection(keycodePress && !gotMove)) {
         switch (e.keyCode) {
             case keycodeLeft:
                 keycodePress = keycodeLeft;
                 console.log("left");
                 snake.direction = LEFT;
+                gotMove = true;
                 break;
             case keycodeUp:
                 keycodePress = keycodeUp;
                 console.log("up");
                 snake.direction = UP;
+                gotMove = true;
                 break;
             case keycodeRight:
                 keycodePress = keycodeRight;
                 console.log("right");
                 snake.direction = RIGHT;
+                gotMove = true;
                 break;
             case keycodeDown:
                 keycodePress = keycodeDown;
                 console.log("down");
                 snake.direction = DOWN;
+                gotMove = true;
                 break;
         }
     }

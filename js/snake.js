@@ -40,6 +40,7 @@ class Snake {
             this._tail.unshift(posHead);
             this._tail.pop();
         }
+        gotMove = false;
     }
 
     nextPosition(pos1, pos2) {
