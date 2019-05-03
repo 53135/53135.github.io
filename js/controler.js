@@ -22,7 +22,7 @@ let gotMove = false;
  * @param {*} e 
  */
 function keyDirection(e) {
-    if (e.keyCode != keycodePress && e.keyCode != reverseDirection(keycodePress && !gotMove)) {
+    if (e.keyCode != keycodePress && e.keyCode != reverseDirection(keycodePress) && !gotMove) {
         switch (e.keyCode) {
             case keycodeLeft:
                 keycodePress = keycodeLeft;
@@ -173,7 +173,7 @@ function saveBestScore() {
 
 function loadBestScore() {
     bestScore = localStorage.getItem("bestScore");
-    if(bestScore == null){
+    if (bestScore == null) {
         bestScore = "0";
     }
 }
