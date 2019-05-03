@@ -168,4 +168,7 @@ function saveBestScore() {
 
 function loadBestScore() {
     bestScore = localStorage.getItem("bestScore");
+    if(bestScore == null){
+        bestScore = "0";
+    }
 }
