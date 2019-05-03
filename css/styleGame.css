@@ -1,0 +1,103 @@
+html
+{
+    text-transform: uppercase;
+    color: white;
+    font-weight: bold;
+}
+
+body
+{
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas: "hd hd"
+    "art1 art2"
+    "ft ft";
+    margin: 0;
+}
+
+header
+{
+    text-align: center;
+    grid-area: hd;
+    background: darkred;
+}
+
+footer
+{
+    text-align: center;
+    grid-area: ft;
+    background: darkred;
+    padding: 1em;
+}
+
+#game
+{
+    grid-area: art1;
+    position: relative;
+    outline: 2px solid #000;
+    font-size: 0;
+    margin: auto;
+    height: 500px;
+    width: 500px;
+    padding:0;
+    border:none;
+}
+
+.case
+{
+    margin: 0;
+    padding: 0;
+    border: none;
+    outline: 1px solid #000;
+    background: orangered;
+    display: inline-block;
+}
+
+.caseHead
+{
+    margin: 0;
+    padding: 0;
+    border: none;
+    outline: 1px solid #000;
+    background: yellow;
+    display: inline-block;
+}
+
+.caseBody
+{
+    margin: 0;
+    padding: 0;
+    border: none;
+    outline: 1px solid #000;
+    background: darkred;
+    display: inline-block;
+}
+
+.fruct
+{
+    margin: 0;
+    padding: 0;
+    border: none;
+    outline: 1px solid #000;
+    background: green;
+    display: inline-block;
+}
+
+#score
+{
+    grid-area: art2;
+    font-size: 2em;
+    color: black;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    text-align: center;
+}
+
+#viewGiveScore, #viewGiveBestScore 
+{
+    color: white;
+    background: darkred;
+}
