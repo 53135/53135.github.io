@@ -16,10 +16,14 @@ let bestScore = 0;
 let pointScoreFive = 10;
 let PointScoreFruct = 50;
 let gotMove = false;
+let tabBlackFruct = [];
+
 
 /**
- * Vérifie la touche pressé du clavier et applique le mouvement.
- * @param {*} e 
+ * Vérifie la touche pressé du clavier en fonction de son keycode. Vérifie bien que les serpent ne
+ * puisse pas aller dans le sens contraire. Dès que le joueur appuie sur une des touches la direction 
+ * ne peut être changé.
+ * @param {String} e 
  */
 function keyDirection(e) {
     if (e.keyCode != keycodePress && e.keyCode != reverseDirection(keycodePress) && !gotMove) {
@@ -53,7 +57,7 @@ function keyDirection(e) {
 }
 
 /**
- * Donne le code clavier de la première direction du serpent.
+ * Donne le keycode de la première direction du serpent.
  */
 function checkFirstDirection() {
     let direction = snake.direction;
@@ -76,8 +80,8 @@ function checkFirstDirection() {
 }
 
 /**
- * Donne le code clavier inverse du code clavier en parametre.
- * @param {keycodePress} le code clavier.
+ * Donne le keycode de la direction opposée du serpent.
+ * @param {number} le code clavier.
  */
 function reverseDirection(keycodePress) {
     let reverseDirection = 0;
@@ -98,19 +102,30 @@ function reverseDirection(keycodePress) {
     return reverseDirection;
 }
 
+/**
+ * Fonction qui gêre tout le jeu. Elle charge le meilleure score 
+ * enregistré. Si le jeu n'est pas terminé: elle crée un fruit, fait bouger le serpent,
+ * vérifie si le jeu n'est terminé, vérifie si la tête du serpent est sur un fruit et pour 
+ * finir met à jour la vue. Sinon sauvegarde le score si il à battu les précédent record.
+ */
 function game() {
     loadBestScore();
     if (!gameOver) {
         createFruct();
+        createFructBlack();
         snake.move();
         isGameOver();
         headOnFruct();
+        headOnBlackFruct();
         updateView();
     } else {
         saveBestScore();
     }
 }
 
+/**
+ * Crée un fruit une fois sur 40 et l'ajoute au tableau de fruit.
+ */
 function createFruct() {
     let randomNb = randomInteger(1, 40);
     if (randomNb == 25) {
@@ -119,6 +134,19 @@ function createFruct() {
     }
 }
 
+function createFructBlack() {
+    let randomNb = randomInteger(1, 40);
+    if (randomNb == 25) {
+        let fruct = fructNotOnSnake();
+        tabBlackFruct.unshift(fruct);
+    }
+}
+
+/**
+ * Vérifie que la position du fruit que nous voulons créer soit bien sur une case vide et que 
+ * ce ne soit pas sur le serepent. Elle return un fruit avec une position qui n'est pas sur 
+ * le serpent.
+ */
 function fructNotOnSnake() {
     let ok = false;
     let position = new Position(0, 0);
@@ -131,10 +159,19 @@ function fructNotOnSnake() {
     return new Fruct(position);
 }
 
+/**
+ * Crée un nombre entier entre un minimum et un maximum.
+ * @param {number} min  de l'intervalle
+ * @param {number} max  de l'intervalle
+ */
 function randomInteger(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+/**
+ * Vérifie si la tête du serpent est sur un fruit. Si elle y est elle supprime le fruit du tableau 
+ * de fruit, augmente le score de 50 et passe "grow = true".
+ */
 function headOnFruct() {
     for (let i = 0; i < tabFruct.length; i++) {
         if (tabFruct[i].position.row == snake.head.row && tabFruct[i].position.column == snake.head.column) {
@@ -145,6 +182,19 @@ function headOnFruct() {
     }
 }
 
+function headOnBlackFruct() {
+    for (let i = 0; i < tabBlackFruct.length; i++) {
+        if (tabBlackFruct[i].position.row == snake.head.row && tabBlackFruct[i].position.column == snake.head.column) {
+            tabBlackFruct.splice(i, 1);
+            snake.tail.splice(1,snake.tail.length);
+        }
+    }
+}
+
+/**
+ * Cette fonction passe "grow = true" et augmente le score de 10 si le jeu n'est pas 
+ * terminé.
+ */
 function growFiveSecond() {
     if (!gameOver) {
         grow = true;
@@ -152,6 +202,10 @@ function growFiveSecond() {
     }
 }
 
+/**
+ * Vérifie si la tête du serpent n'est pas sur son corps si oui elle passe 
+ * "gameOver = true".
+ */
 function isGameOver() {
     for (let i = 0; i < snake.tail.length; i++) {
         if (snake.tail[i].row == snake.head.row && snake.tail[i].column == snake.head.column) {
@@ -160,10 +214,17 @@ function isGameOver() {
     }
 }
 
+/**
+ * Met à jour le score.
+ * @param {number} pointScore  le nbr de points que nous voulons rajouter.
+ */
 function updateScore(pointScore) {
     score += pointScore;
 }
 
+/**
+ * Suavegarde le score si il dépasse le précédent meilleur record.
+ */
 function saveBestScore() {
     let stringScore = score.toString();
     if (bestScore < score) {
@@ -171,9 +232,19 @@ function saveBestScore() {
     }
 }
 
+/**
+ * Charge le meilleur score.
+ */
 function loadBestScore() {
     bestScore = localStorage.getItem("bestScore");
     if (bestScore == null) {
         bestScore = "0";
     }
+}
+
+/**
+ * Rafraichie la page.
+ */
+function reloadPage() {
+    location.reload(true);
 }
