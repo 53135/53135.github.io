@@ -187,6 +187,7 @@ function headOnBlackFruct() {
         if (tabBlackFruct[i].position.row == snake.head.row && tabBlackFruct[i].position.column == snake.head.column) {
             tabBlackFruct.splice(i, 1);
             snake.tail.splice(1,snake.tail.length);
+            score = 0;
         }
     }
 }
